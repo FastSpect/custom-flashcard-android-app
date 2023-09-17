@@ -1,5 +1,6 @@
 package com.personal.customflashcards
 
+import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
@@ -26,6 +27,10 @@ class TestActivity : AppCompatActivity() {
     private var flashcards: List<Flashcard> = listOf()
     private var questionIndices: MutableList<Int> = mutableListOf()
     private var isAnswerCorrect = false
+    private var totalQuestions = 0
+    private var correctAnswers = 0
+    private var incorrectTries = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +43,7 @@ class TestActivity : AppCompatActivity() {
         // Load flashcards - This should ideally be loaded from SharedPreferences or passed from the previous activity
         // ...
         flashcards = intent.getSerializableExtra("flashcards") as? List<Flashcard> ?: listOf()
+        totalQuestions = flashcards.size
 
         // Initialize and shuffle the question indices
         questionIndices = flashcards.indices.toMutableList().shuffled().toMutableList()
@@ -75,11 +81,27 @@ class TestActivity : AppCompatActivity() {
                 selectedOption.setBackgroundColor(Color.WHITE)
                 correctOption.setBackgroundColor(Color.WHITE)
 
-                if (isAnswerCorrect) questionIndices.removeAt(0)
-                else questionIndices.add(questionIndices.removeAt(0))
+                if (isAnswerCorrect) {
+                    correctAnswers++
+                    questionIndices.removeAt(0)
+                } else {
+                    incorrectTries++
+                    questionIndices.add(questionIndices.removeAt(0))
+                }
 
                 if (questionIndices.isNotEmpty()) displayQuestion()
-                else finish()
+                else {
+                    val efficiency =
+                        (totalQuestions.toFloat() / (totalQuestions + incorrectTries).toFloat()) * 100
+                    AlertDialog.Builder(this).setTitle("Test Report")
+                        .setMessage("Efficiency: $efficiency%")
+                        .setPositiveButton("OK") { dialog, _ ->
+                            dialog.dismiss()
+                            finish()
+                        }
+                        .setCancelable(false)  // This ensures the dialog can't be dismissed without pressing "OK"
+                        .show()
+                }
             }, 1000)  // Delay for 1 second
         }
     }
