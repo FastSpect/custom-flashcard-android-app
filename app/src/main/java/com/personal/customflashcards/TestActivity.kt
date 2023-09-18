@@ -16,7 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 class TestActivity : AppCompatActivity() {
 
 
-    private val TAG = "TestActivity"
+    private val tag = "TestActivity"
 
     private lateinit var questionTextView: TextView
     private lateinit var optionsRadioGroup: RadioGroup
@@ -107,23 +107,31 @@ class TestActivity : AppCompatActivity() {
     }
 
     private fun displayQuestion() {
-        Log.i(TAG, flashcards.toString())
+        Log.i(tag, flashcards.toString())
         if (questionIndices.isEmpty()) return
         val currentFlashcard = flashcards[questionIndices.first()]
         questionTextView.text = currentFlashcard.question
 
         val options = generateOptions(currentFlashcard.answer)
-        findViewById<RadioButton>(R.id.option1).text = options[0]
-        findViewById<RadioButton>(R.id.option2).text = options[1]
-        findViewById<RadioButton>(R.id.option3).text = options[2]
-        findViewById<RadioButton>(R.id.option4).text = options[3]
-
-        correctOption = when (currentFlashcard.answer) {
-            options[0] -> findViewById(R.id.option1)
-            options[1] -> findViewById(R.id.option2)
-            options[2] -> findViewById(R.id.option3)
-            else -> findViewById(R.id.option4)
+        if (options.size < 4) {
+            // Handle error: Not enough options generated
+            return
         }
+        // Array of RadioButton IDs
+        val radioButtonIds = arrayOf(R.id.option1, R.id.option2, R.id.option3, R.id.option4)
+
+        // Set options to RadioButtons and find correct option
+        var correctRadioButton: RadioButton? = null
+        for (i in options.indices) {
+            val radioButton = findViewById<RadioButton>(radioButtonIds[i])
+            radioButton.text = options[i]
+            if (options[i] == currentFlashcard.answer) {
+                correctRadioButton = radioButton
+            }
+        }
+
+        // If none matched (though it shouldn't happen), you can default to any RadioButton, or handle the error differently
+        correctOption = correctRadioButton ?: findViewById(R.id.option4)
     }
 
     private fun generateOptions(correctAnswer: String): List<String> {
