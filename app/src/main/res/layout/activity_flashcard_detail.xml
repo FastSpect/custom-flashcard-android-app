@@ -25,6 +25,16 @@
         android:layout_marginBottom="16dp"
         android:text="Test" />
 
+    <!-- Button for deleting -->
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:background="#FF4848"
+        android:text="Delete" />
+
     <!-- RecyclerView for flashcards (Optional, if you want to display them) -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/flashcardsRecyclerView"

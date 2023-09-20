@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,8 +36,15 @@ class FlashcardDetailActivity : AppCompatActivity() {
         testButton.setOnClickListener {
             // Start a new Activity or show a dialog, etc., to begin the test
             val intent = Intent(this, TestActivity::class.java)
-            intent.putExtra("flashcards", ArrayList(flashcards)) // Convert the flashcards list to an ArrayList before passing
+            intent.putExtra(
+                "flashcards", ArrayList(flashcards)
+            ) // Convert the flashcards list to an ArrayList before passing
             startActivity(intent)
+        }
+
+        var deleteButton: Button = findViewById(R.id.deleteButton)
+        deleteButton.setOnClickListener {
+            deleteFlashcards(setName ?: "")
         }
     }
 
@@ -47,5 +55,22 @@ class FlashcardDetailActivity : AppCompatActivity() {
 
         val type = object : TypeToken<List<Flashcard>>() {}.type
         return gson.fromJson(json, type)
+    }
+
+    private fun deleteFlashcards(setName: String) {
+        if (setName.isNotBlank()) {
+            val sharedPreferences = getSharedPreferences("flashcards_data", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+
+            editor.remove(setName)
+            editor.apply()
+
+            Toast.makeText(this, "Flashcards deleted!", Toast.LENGTH_SHORT).show()
+
+            // Navigate back to the list of flashcard sets or close this activity
+            finish()
+        } else {
+            Toast.makeText(this, "Error deleting flashcards.", Toast.LENGTH_SHORT).show()
+        }
     }
 }

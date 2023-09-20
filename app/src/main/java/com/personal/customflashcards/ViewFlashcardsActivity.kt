@@ -41,6 +41,14 @@ class ViewFlashcardsActivity : AppCompatActivity() {
         setsRecyclerView.adapter = setNameAdapter
     }
 
+    override fun onResume() {
+        super.onResume()
+        setNames.clear()  // Clear the previous list
+        setNames.addAll(loadFlashcards())  // Reload the list from SharedPreferences
+        setsRecyclerView.adapter?.notifyDataSetChanged()  // Notify the adapter to refresh the list
+    }
+
+
     private fun loadFlashcards(): List<String> {
         val sharedPreferences = getSharedPreferences("flashcards_data", Context.MODE_PRIVATE)
         return sharedPreferences.all.keys.toList()
