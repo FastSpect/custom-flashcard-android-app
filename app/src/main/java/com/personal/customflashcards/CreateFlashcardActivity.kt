@@ -59,6 +59,9 @@ class CreateFlashcardActivity : AppCompatActivity() {
                 saveFlashcards(setName)
                 Toast.makeText(this, "All flashcards saved under $setName!", Toast.LENGTH_SHORT)
                     .show()
+                temporaryFlashcards.clear()
+                flashcardAdapter.notifyDataSetChanged()
+                setNameEditText.text.clear()
             } else {
                 Toast.makeText(
                     this,
