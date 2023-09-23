@@ -13,10 +13,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 class ViewFlashcardsActivity : AppCompatActivity() {
-    companion object {
-        const val TAG = "ViewFlashcardsActivity"
-    }
 
+    private val tag = "ViewFlashcardsActivity"
 
     private lateinit var setsRecyclerView: RecyclerView
     private val setNames = mutableListOf<String>()
@@ -35,8 +33,6 @@ class ViewFlashcardsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
-
         setsRecyclerView.layoutManager = LinearLayoutManager(this)
         setsRecyclerView.adapter = setNameAdapter
     }
@@ -47,7 +43,6 @@ class ViewFlashcardsActivity : AppCompatActivity() {
         setNames.addAll(loadFlashcards())  // Reload the list from SharedPreferences
         setsRecyclerView.adapter?.notifyDataSetChanged()  // Notify the adapter to refresh the list
     }
-
 
     private fun loadFlashcards(): List<String> {
         val sharedPreferences = getSharedPreferences("flashcards_data", Context.MODE_PRIVATE)

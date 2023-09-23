@@ -18,6 +18,8 @@ import java.io.Serializable
 
 class CreateFlashcardActivity : AppCompatActivity() {
 
+    private val tag = "CreateFlashcardActivity"
+
     private lateinit var setNameEditText: EditText
     private lateinit var questionEditText: EditText
     private lateinit var answerEditText: EditText
@@ -43,7 +45,7 @@ class CreateFlashcardActivity : AppCompatActivity() {
 
             if (question.isNotBlank() && answer.isNotBlank()) {
                 temporaryFlashcards.add(Flashcard(question, answer))
-                flashcardAdapter.notifyDataSetChanged()  // Update the RecyclerView
+                flashcardAdapter.notifyItemInserted(temporaryFlashcards.size-1)  // Update the RecyclerView
                 questionEditText.text.clear()
                 answerEditText.text.clear()
                 Toast.makeText(this, "Flashcard added!", Toast.LENGTH_SHORT).show()
@@ -85,7 +87,7 @@ class CreateFlashcardActivity : AppCompatActivity() {
         val editor = sharedPreferences.edit()
 
         // Using a key based on setName, e.g., "flashcard_set_topic1"
-        editor.putString("$setName", flashcardsJson)
+        editor.putString(setName, flashcardsJson)
 
         editor.apply()
     }
@@ -95,18 +97,17 @@ private lateinit var flashcardAdapter: FlashcardAdapter
 
 data class Flashcard(val question: String, val answer: String) : Serializable
 
-
 class FlashcardAdapter(private val flashcards: MutableList<Flashcard>) :
     RecyclerView.Adapter<FlashcardAdapter.FlashcardViewHolder>() {
 
     inner class FlashcardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val questionText: TextView = itemView.findViewById(R.id.questionText)
         val answerText: TextView = itemView.findViewById(R.id.answerText)
-        val deleteImageView: ImageView = itemView.findViewById(R.id.deleteImageView)
+        private val deleteImageView: ImageView = itemView.findViewById(R.id.deleteImageView)
 
         init {
             deleteImageView.setOnClickListener {
-                val position = adapterPosition
+                val position = absoluteAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     flashcards.removeAt(position)
                     notifyItemRemoved(position)

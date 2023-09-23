@@ -6,6 +6,9 @@ import android.widget.Button
 import androidx.activity.ComponentActivity
 
 class MainActivity : ComponentActivity() {
+
+    private val tag = "MainActivity"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)

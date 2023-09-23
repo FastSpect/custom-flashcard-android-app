@@ -15,6 +15,8 @@ import com.google.gson.reflect.TypeToken
 
 class FlashcardDetailActivity : AppCompatActivity() {
 
+    private val tag = "FlashcardDetailActivity"
+
     private lateinit var flashcardsRecyclerView: RecyclerView
     private val flashcards = mutableListOf<Flashcard>()
     private lateinit var editQuestionEditText: EditText
@@ -40,7 +42,7 @@ class FlashcardDetailActivity : AppCompatActivity() {
             flashcardsRecyclerView.adapter = flashcardAdapter
         }
 
-        var testButton: Button = findViewById(R.id.testButton)
+        val testButton: Button = findViewById(R.id.testButton)
         testButton.setOnClickListener {
             // Start a new Activity or show a dialog, etc., to begin the test
             val intent = Intent(this, TestActivity::class.java)
@@ -50,7 +52,7 @@ class FlashcardDetailActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        var deleteButton: Button = findViewById(R.id.deleteButton)
+        val deleteButton: Button = findViewById(R.id.deleteButton)
         deleteButton.setOnClickListener {
             deleteFlashcards(setName ?: "")
         }
@@ -69,7 +71,7 @@ class FlashcardDetailActivity : AppCompatActivity() {
                 flashcards.add(Flashcard(question, answer))
 
                 // Update the RecyclerView to reflect the new addition
-                flashcardsRecyclerView.adapter?.notifyDataSetChanged()
+                flashcardsRecyclerView.adapter?.notifyItemInserted(flashcards.size-1)
 
                 // Clear the input fields
                 editQuestionEditText.text.clear()

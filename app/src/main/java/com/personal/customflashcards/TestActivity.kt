@@ -15,20 +15,17 @@ import androidx.appcompat.app.AppCompatActivity
 
 class TestActivity : AppCompatActivity() {
 
-
-    private val TAG = "TestActivity"
+    private val tag = "TestActivity"
 
     private lateinit var questionTextView: TextView
     private lateinit var optionsRadioGroup: RadioGroup
     private lateinit var nextButton: Button
     private lateinit var correctOption: RadioButton
 
-
     private var flashcards: List<Flashcard> = listOf()
     private var questionIndices: MutableList<Int> = mutableListOf()
     private var isAnswerCorrect = false
     private var totalTries = 0
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,12 +37,12 @@ class TestActivity : AppCompatActivity() {
 
         // Load flashcards - This should ideally be loaded from SharedPreferences or passed from the previous activity
         // ...
-        flashcards = intent.getSerializableExtra("flashcards") as? List<Flashcard> ?: listOf()
+        flashcards =
+            intent.getSerializableExtra("flashcards", ArrayList::class.java) as? List<Flashcard>
+                ?: listOf()
 
         // Initialize and shuffle the question indices
         questionIndices = flashcards.indices.toMutableList().shuffled().toMutableList()
-
-
 
         displayQuestion()
 
@@ -71,7 +68,6 @@ class TestActivity : AppCompatActivity() {
                     correctOption.setBackgroundColor(Color.GREEN)  // Indicate the correct answer
                     false
                 }
-
 
             // Delay for a brief moment to show the correct/wrong color feedback
             Handler(Looper.getMainLooper()).postDelayed({
@@ -99,22 +95,27 @@ class TestActivity : AppCompatActivity() {
     }
 
     private fun displayQuestion() {
-        Log.i(TAG, flashcards.toString())
+        Log.i(tag, flashcards.toString())
         if (questionIndices.isEmpty()) return
         val currentFlashcard = flashcards[questionIndices.first()]
         questionTextView.text = currentFlashcard.question
 
         val options = generateOptions(currentFlashcard.answer)
-        findViewById<RadioButton>(R.id.option1).text = options[0]
-        findViewById<RadioButton>(R.id.option2).text = options[1]
-        findViewById<RadioButton>(R.id.option3).text = options[2]
-        findViewById<RadioButton>(R.id.option4).text = options[3]
+        val option1: RadioButton = findViewById(R.id.option1)
+        val option2: RadioButton = findViewById(R.id.option2)
+        val option3: RadioButton = findViewById(R.id.option3)
+        val option4: RadioButton = findViewById(R.id.option4)
+
+        option1.text = options[0]
+        option2.text = options[1]
+        option3.text = options[2]
+        option4.text = options[3]
 
         correctOption = when (currentFlashcard.answer) {
-            options[0] -> findViewById(R.id.option1)
-            options[1] -> findViewById(R.id.option2)
-            options[2] -> findViewById(R.id.option3)
-            else -> findViewById(R.id.option4)
+            options[0] -> option1
+            options[1] -> option2
+            options[2] -> option3
+            else -> option4
         }
     }
 
