@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -95,12 +96,23 @@ private lateinit var flashcardAdapter: FlashcardAdapter
 data class Flashcard(val question: String, val answer: String) : Serializable
 
 
-class FlashcardAdapter(private val flashcards: List<Flashcard>) :
+class FlashcardAdapter(private val flashcards: MutableList<Flashcard>) :
     RecyclerView.Adapter<FlashcardAdapter.FlashcardViewHolder>() {
 
     inner class FlashcardViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val questionText: TextView = itemView.findViewById(R.id.questionText)
         val answerText: TextView = itemView.findViewById(R.id.answerText)
+        val deleteImageView: ImageView = itemView.findViewById(R.id.deleteImageView)
+
+        init {
+            deleteImageView.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    flashcards.removeAt(position)
+                    notifyItemRemoved(position)
+                }
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FlashcardViewHolder {
