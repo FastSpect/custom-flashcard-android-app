@@ -19,21 +19,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Enter Question" />
+        android:hint="@string/question_hint" />
 
     <EditText
         android:id="@+id/answerEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="Enter Answer" />
+        android:hint="@string/answer_hint" />
 
     <Button
         android:id="@+id/addButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Add" />
+        android:text="@string/add" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/flashcardsRecyclerView"
@@ -46,6 +46,6 @@
         android:id="@+id/savebutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Save FlashCard" />
+        android:text="@string/save" />
 
 </LinearLayout>

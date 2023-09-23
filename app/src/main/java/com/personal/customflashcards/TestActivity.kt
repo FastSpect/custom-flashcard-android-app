@@ -10,6 +10,7 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 
 class TestActivity : AppCompatActivity() {
@@ -26,6 +27,8 @@ class TestActivity : AppCompatActivity() {
     private var flashcards: List<Flashcard> = listOf()
     private var questionIndices: MutableList<Int> = mutableListOf()
     private var isAnswerCorrect = false
+    private var totalTries = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +50,7 @@ class TestActivity : AppCompatActivity() {
         displayQuestion()
 
         nextButton.setOnClickListener {
+            totalTries++
             val selectedOptionId = optionsRadioGroup.checkedRadioButtonId
 
             // Check if an option was selected
@@ -79,7 +83,17 @@ class TestActivity : AppCompatActivity() {
                 else questionIndices.add(questionIndices.removeAt(0))
 
                 if (questionIndices.isNotEmpty()) displayQuestion()
-                else finish()
+                else {
+                    // End of questions. Calculate efficiency and show the toast.
+                    val efficiency = (flashcards.size.toDouble() / totalTries) * 100
+                    val alertDialog = AlertDialog.Builder(this).setTitle("Test Results")
+                        .setMessage("Efficiency: ${String.format("%.2f", efficiency)}%")
+                        .setPositiveButton("OK") { _, _ ->
+                            finish()
+                        }.create()
+
+                    alertDialog.show()
+                }
             }, 1000)  // Delay for 1 second
         }
     }

@@ -23,13 +23,49 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="16dp"
-        android:text="Test" />
+        android:text="@string/test" />
+
+    <!-- Button for deleting -->
+    <Button
+        android:id="@+id/deleteButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp"
+        android:background="#FF4848"
+        android:hint="@string/delete_flashcard" />
+
+    <EditText
+        android:id="@+id/editQuestionEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/question_hint" />
+
+    <EditText
+        android:id="@+id/editAnswerEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/answer_hint" />
+
 
     <!-- RecyclerView for flashcards (Optional, if you want to display them) -->
+
+    <Button
+        android:id="@+id/addFlashcardButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/flashcardsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/saveAllFlashcardsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/save" />
 
 </LinearLayout>
