@@ -50,6 +50,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.cardview:cardview:1.0.0")
     implementation("com.google.code.gson:gson:2.8.6")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
