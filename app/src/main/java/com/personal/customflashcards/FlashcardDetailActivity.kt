@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,6 +24,8 @@ class FlashcardDetailActivity : AppCompatActivity() {
     private lateinit var editAnswerEditText: EditText
     private lateinit var addFlashcardButton: Button
     private lateinit var saveAllFlashcardsButton: Button
+    private lateinit var flashcardSetTitle: TextView
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,12 +37,19 @@ class FlashcardDetailActivity : AppCompatActivity() {
         val setName = intent.getStringExtra("setName")
 
         if (setName != null) {
-            val titleTextView: TextView = findViewById(R.id.flashcardSetTitle)
-            "Flashcard Set: $setName".also { titleTextView.text = it }
+            flashcardSetTitle = findViewById(R.id.flashcardSetTitle)
+            "Flashcard Set: $setName".also { flashcardSetTitle.text = it }
             flashcards.addAll(loadFlashcards(setName))
             val flashcardAdapter = FlashcardAdapter(flashcards)
             flashcardsRecyclerView.layoutManager = LinearLayoutManager(this)
             flashcardsRecyclerView.adapter = flashcardAdapter
+        }
+
+        flashcardSetTitle.setOnLongClickListener {
+            if (setName != null) {
+                showRenameDialog(setName)
+            }
+            true
         }
 
         val testButton: Button = findViewById(R.id.testButton)
@@ -71,7 +81,7 @@ class FlashcardDetailActivity : AppCompatActivity() {
                 flashcards.add(Flashcard(question, answer))
 
                 // Update the RecyclerView to reflect the new addition
-                flashcardsRecyclerView.adapter?.notifyItemInserted(flashcards.size-1)
+                flashcardsRecyclerView.adapter?.notifyItemInserted(flashcards.size - 1)
 
                 // Clear the input fields
                 editQuestionEditText.text.clear()
@@ -122,4 +132,51 @@ class FlashcardDetailActivity : AppCompatActivity() {
         val setName = intent.getStringExtra("setName")
         sharedPreferences.edit().putString(setName, flashcardsJson).apply()
     }
+
+    private fun showRenameDialog(currentName: String) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Rename Flashcard Set")
+
+        val input = EditText(this)
+        input.setText(currentName)
+        builder.setView(input)
+
+        builder.setPositiveButton("Rename") { dialog, _ ->
+            val newName = input.text.toString().trim()
+            if (newName.isNotEmpty() && newName != currentName) {
+                renameFlashcardSet(currentName, newName)
+            }
+        }
+        builder.setNegativeButton("Cancel") { dialog, _ -> dialog.cancel() }
+
+        builder.show()
+    }
+
+    private fun renameFlashcardSet(oldName: String, newName: String) {
+        val sharedPreferences = getSharedPreferences("flashcards_data", Context.MODE_PRIVATE)
+        val existingSet = sharedPreferences.getString(newName, null)
+        if (existingSet != null) {
+            // New name already exists, handle this case
+            Toast.makeText(this, "A set with this name already exists!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val editor = sharedPreferences.edit()
+        val gson = Gson()
+        val oldFlashcardsJson = sharedPreferences.getString(oldName, null)
+
+        // Save flashcards under new name
+        editor.putString(newName, oldFlashcardsJson)
+
+        // Remove old name entry
+        editor.remove(oldName)
+
+        editor.apply()
+
+        // Refresh current UI if needed
+        flashcardSetTitle.text = newName
+        Toast.makeText(this, "Flashcard set name updated!", Toast.LENGTH_SHORT).show()
+    }
+
+
 }
