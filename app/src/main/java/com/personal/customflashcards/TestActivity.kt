@@ -35,13 +35,10 @@ class TestActivity : AppCompatActivity() {
         optionsRadioGroup = findViewById(R.id.optionsRadioGroup)
         nextButton = findViewById(R.id.nextButton)
 
-        // Load flashcards - This should ideally be loaded from SharedPreferences or passed from the previous activity
-        // ...
         flashcards =
             intent.getSerializableExtra("flashcards", ArrayList::class.java) as? List<Flashcard>
                 ?: listOf()
 
-        // Initialize and shuffle the question indices
         questionIndices = flashcards.indices.toMutableList().shuffled().toMutableList()
 
         displayQuestion()
@@ -50,7 +47,6 @@ class TestActivity : AppCompatActivity() {
             totalTries++
             val selectedOptionId = optionsRadioGroup.checkedRadioButtonId
 
-            // Check if an option was selected
             if (selectedOptionId == -1) {
                 Toast.makeText(this, "Please select an option", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -71,7 +67,7 @@ class TestActivity : AppCompatActivity() {
 
             // Delay for a brief moment to show the correct/wrong color feedback
             Handler(Looper.getMainLooper()).postDelayed({
-                optionsRadioGroup.clearCheck() // Clear previous selection
+                optionsRadioGroup.clearCheck()
                 selectedOption.setBackgroundColor(Color.WHITE)
                 correctOption.setBackgroundColor(Color.WHITE)
 

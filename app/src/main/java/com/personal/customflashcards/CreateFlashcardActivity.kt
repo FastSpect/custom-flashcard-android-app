@@ -1,7 +1,8 @@
 package com.personal.customflashcards
 
-import android.content.Context
+import android.content.ContentValues
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
+import java.io.IOException
 import java.io.Serializable
 
 class CreateFlashcardActivity : AppCompatActivity() {
@@ -45,7 +47,7 @@ class CreateFlashcardActivity : AppCompatActivity() {
 
             if (question.isNotBlank() && answer.isNotBlank()) {
                 temporaryFlashcards.add(Flashcard(question, answer))
-                flashcardAdapter.notifyItemInserted(temporaryFlashcards.size-1)  // Update the RecyclerView
+                flashcardAdapter.notifyItemInserted(temporaryFlashcards.size - 1)  // Update the RecyclerView
                 questionEditText.text.clear()
                 answerEditText.text.clear()
                 Toast.makeText(this, "Flashcard added!", Toast.LENGTH_SHORT).show()
@@ -76,21 +78,32 @@ class CreateFlashcardActivity : AppCompatActivity() {
     }
 
     private fun saveFlashcards(setName: String) {
-        // Use 'setName' as a key or part of the key to save 'temporaryFlashcards' as JSON
-        // For example, you could prefix all set names with "flashcard_set_" to distinguish in SharedPreferences
-        // e.g., "flashcard_set_topic1", "flashcard_set_topic2", etc.
+
         val gson = Gson()
         val flashcardsJson = gson.toJson(temporaryFlashcards)
 
-        // Save the JSON string in SharedPreferences under a specific key
-        val sharedPreferences = getSharedPreferences("flashcards_data", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
+        val contentValues = ContentValues().apply {
+            put(MediaStore.Files.FileColumns.DISPLAY_NAME, "$setName.txt")
+            put(MediaStore.Files.FileColumns.MIME_TYPE, "text/plain")
+            put(MediaStore.Files.FileColumns.RELATIVE_PATH, "Documents/Flashcards")
+        }
 
-        // Using a key based on setName, e.g., "flashcard_set_topic1"
-        editor.putString(setName, flashcardsJson)
+        val fileUri =
+            contentResolver.insert(MediaStore.Files.getContentUri("external"), contentValues)
 
-        editor.apply()
+        fileUri?.let { uri ->
+            try {
+                contentResolver.openOutputStream(uri)?.use { outputStream ->
+                    // Write actual JSON data to the file
+                    outputStream.write(flashcardsJson.toByteArray(Charsets.UTF_8))
+                }
+            } catch (e: IOException) {
+                // Handle the exception. This can be logging or showing an error to the user.
+                e.printStackTrace()
+            }
+        }
     }
+
 }
 
 private lateinit var flashcardAdapter: FlashcardAdapter
