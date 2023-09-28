@@ -1,10 +1,8 @@
 package com.personal.customflashcards
 
-import android.content.ContentUris
 import android.content.Intent
 import android.os.Bundle
 import android.os.Environment
-import android.provider.MediaStore
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -103,32 +101,11 @@ class FlashcardDetailActivity : AppCompatActivity() {
     }
 
     private fun loadFlashcards(setName: String): List<Flashcard> {
-        // Query for the specific file based on setName
-        val projection = arrayOf(MediaStore.Files.FileColumns._ID)
-
-        val selection =
-            "${MediaStore.Files.FileColumns.RELATIVE_PATH} LIKE ? AND ${MediaStore.Files.FileColumns.DISPLAY_NAME} = ?"
-        val selectionArgs = arrayOf("%Documents/Flashcards%", "$setName.txt")
-
-        val fileId = contentResolver.query(
-            MediaStore.Files.getContentUri("external"), projection, selection, selectionArgs, null
-        )?.use { cursor ->
-            if (cursor.moveToFirst()) {
-                cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns._ID))
-            } else {
-                null
-            }
-        } ?: return emptyList()
-
-        val fileUri = ContentUris.withAppendedId(MediaStore.Files.getContentUri("external"), fileId)
-
-        // Read the file content and deserialize
-        val content = contentResolver.openInputStream(fileUri)?.bufferedReader()?.readText()
-            ?: return emptyList()
-
+        val file =
+            File(Environment.getExternalStorageDirectory(), "Documents/Flashcards/$setName.txt")
         val gson = Gson()
         val type = object : TypeToken<List<Flashcard>>() {}.type
-        return gson.fromJson(content, type)
+        return gson.fromJson(file.readText(), type)
     }
 
 

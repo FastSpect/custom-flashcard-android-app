@@ -2,7 +2,8 @@ package com.personal.customflashcards
 
 import android.content.Intent
 import android.os.Bundle
-import android.provider.MediaStore
+import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.io.File
 
 
 class ViewFlashcardsActivity : AppCompatActivity() {
@@ -46,26 +48,11 @@ class ViewFlashcardsActivity : AppCompatActivity() {
 
     private fun loadFlashcards(): List<String> {
         val filenames = mutableListOf<String>()
-
-        val projection = arrayOf(MediaStore.Files.FileColumns.DISPLAY_NAME)
-
-        // Filter results to show only .txt files in "Documents/Flashcards"
-        val selection =
-            "${MediaStore.Files.FileColumns.RELATIVE_PATH} LIKE ? AND ${MediaStore.Files.FileColumns.DISPLAY_NAME} LIKE ?"
-        val selectionArgs = arrayOf("%Documents/Flashcards%", "%.txt")
-
-        contentResolver.query(
-            MediaStore.Files.getContentUri("external"), projection, selection, selectionArgs, null
-        )?.use { cursor ->
-            val displayNameColumn =
-                cursor.getColumnIndexOrThrow(MediaStore.Files.FileColumns.DISPLAY_NAME)
-
-            while (cursor.moveToNext()) {
-                val filename = cursor.getString(displayNameColumn)
-                filenames.add(filename.substringBefore('.'))
-            }
+        val file = File(Environment.getExternalStorageDirectory(), "Documents/Flashcards")
+        file.listFiles()?.forEach { f ->
+            filenames.add(f.name.substringBefore('.'))
         }
-
+        Log.d(tag, "${filenames.size} Flashcards found: $filenames")
         return filenames
     }
 
