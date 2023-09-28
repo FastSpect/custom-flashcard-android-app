@@ -1,8 +1,9 @@
 package com.personal.customflashcards
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Environment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +11,12 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.io.File
 
 
 class ViewFlashcardsActivity : AppCompatActivity() {
-    companion object {
-        const val TAG = "ViewFlashcardsActivity"
-    }
 
+    private val tag = "ViewFlashcardsActivity"
 
     private lateinit var setsRecyclerView: RecyclerView
     private val setNames = mutableListOf<String>()
@@ -35,8 +35,6 @@ class ViewFlashcardsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
-
         setsRecyclerView.layoutManager = LinearLayoutManager(this)
         setsRecyclerView.adapter = setNameAdapter
     }
@@ -48,11 +46,16 @@ class ViewFlashcardsActivity : AppCompatActivity() {
         setsRecyclerView.adapter?.notifyDataSetChanged()  // Notify the adapter to refresh the list
     }
 
-
     private fun loadFlashcards(): List<String> {
-        val sharedPreferences = getSharedPreferences("flashcards_data", Context.MODE_PRIVATE)
-        return sharedPreferences.all.keys.toList()
+        val filenames = mutableListOf<String>()
+        val file = File(Environment.getExternalStorageDirectory(), "Documents/Flashcards")
+        file.listFiles()?.forEach { f ->
+            filenames.add(f.name.substringBefore('.'))
+        }
+        Log.d(tag, "${filenames.size} Flashcards found: $filenames")
+        return filenames
     }
+
 }
 
 class SetNameAdapter(
