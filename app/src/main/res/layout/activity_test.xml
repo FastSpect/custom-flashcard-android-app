@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -11,7 +12,8 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
         android:text="Question here"
-        android:textSize="18sp" />
+        android:textColor="@color/white"
+        android:textSize="30sp" />
 
     <RadioGroup
         android:id="@+id/optionsRadioGroup"
@@ -23,29 +25,57 @@
             android:id="@+id/option1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="4dp"
             android:layout_weight="1"
-            android:text="Option 1" />
+            android:background="#202020"
+            android:button="@android:color/transparent"
+            android:buttonTint="@color/white"
+            android:text="Option 1"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
 
         <RadioButton
             android:id="@+id/option2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="4dp"
             android:layout_weight="1"
-            android:text="Option 2" />
+            android:background="#202020"
+            android:button="@android:color/transparent"
+            android:buttonTint="@color/white"
+            android:text="Option 2"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
 
         <RadioButton
             android:id="@+id/option3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="4dp"
             android:layout_weight="1"
-            android:text="Option 3" />
+            android:background="#202020"
+            android:button="@android:color/transparent"
+            android:buttonTint="@color/white"
+            android:text="Option 3"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
 
         <RadioButton
             android:id="@+id/option4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_margin="4dp"
             android:layout_weight="1"
-            android:text="Option 4" />
+            android:background="#202020"
+            android:button="@android:color/transparent"
+            android:buttonTint="@color/white"
+            android:text="Option 4"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
     </RadioGroup>
 
     <Button
@@ -54,6 +84,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
+        android:background="#202020"
+        android:padding="10dp"
+        android:textColor="@color/white"
         android:text="Next" />
 
 </LinearLayout>

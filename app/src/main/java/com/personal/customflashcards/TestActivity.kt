@@ -68,8 +68,8 @@ class TestActivity : AppCompatActivity() {
             // Delay for a brief moment to show the correct/wrong color feedback
             Handler(Looper.getMainLooper()).postDelayed({
                 optionsRadioGroup.clearCheck()
-                selectedOption.setBackgroundColor(Color.rgb(250, 250, 250))
-                correctOption.setBackgroundColor(Color.rgb(250, 250, 250))
+                selectedOption.setBackgroundColor(Color.BLACK)
+                correctOption.setBackgroundColor(Color.BLACK)
 
                 if (isAnswerCorrect) questionIndices.removeAt(0)
                 else questionIndices.add(questionIndices.removeAt(0))

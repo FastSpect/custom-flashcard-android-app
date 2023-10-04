@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/black"
     android:orientation="vertical"
     android:padding="16dp"
     tools:context=".MainActivity">
@@ -12,28 +12,40 @@
         android:id="@+id/nameFlashCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter FlashCards Name" />
+        android:backgroundTint="@color/white"
+        android:hint="Enter FlashCards Name"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
 
     <EditText
         android:id="@+id/questionEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="@string/question_hint" />
+        android:backgroundTint="@color/white"
+        android:hint="@string/question_hint"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
 
     <EditText
         android:id="@+id/answerEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:hint="@string/answer_hint" />
+        android:backgroundTint="@color/white"
+        android:hint="@string/answer_hint"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
 
     <Button
         android:id="@+id/addButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="@string/add" />
+        android:background="#202020"
+        android:padding="10dp"
+        android:text="@string/add"
+        android:textColor="@color/white" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/flashcardsRecyclerView"
@@ -46,6 +58,9 @@
         android:id="@+id/savebutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/save" />
+        android:background="#202020"
+        android:padding="10dp"
+        android:text="@string/save"
+        android:textColor="@color/white" />
 
 </LinearLayout>
