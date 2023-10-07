@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="16dp"
-        android:background="#202020"
+        android:background="@color/dark"
         android:padding="10dp"
         android:text="@string/test"
         android:textColor="@color/white" />
@@ -64,7 +64,7 @@
         android:id="@+id/addFlashcardButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#202020"
+        android:background="@color/dark"
         android:padding="10dp"
         android:text="@string/add"
         android:textColor="@color/white" />
@@ -79,7 +79,7 @@
         android:id="@+id/saveAllFlashcardsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#202020"
+        android:background="@color/dark"
         android:padding="10dp"
         android:text="@string/save"
         android:textColor="@color/white" />

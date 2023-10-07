@@ -6,4 +6,5 @@
     <string name="question_hint">Enter Key</string>
     <string name="answer_hint">Enter Value</string>
     <string name="test">Test</string>
+    <string name="flashcard_name_hint">Enter FlashCards Name</string>
 </resources>

@@ -36,6 +36,8 @@ class MainActivity : ComponentActivity() {
 
         val createFlashCardButton: Button = findViewById(R.id.createFlashcardButton)
         val viewFlashcardsButton: Button = findViewById(R.id.viewFlashcardsButton)
+        val settingsButton: Button = findViewById(R.id.settingsButton)
+
 
         createFlashCardButton.setOnClickListener {
             val createIntent = Intent(this, CreateFlashcardActivity::class.java)
@@ -44,6 +46,11 @@ class MainActivity : ComponentActivity() {
 
         viewFlashcardsButton.setOnClickListener {
             val viewIntent = Intent(this, ViewFlashcardsActivity::class.java)
+            startActivity(viewIntent)
+        }
+
+        settingsButton.setOnClickListener {
+            val viewIntent = Intent(this, SettingsActivity::class.java)
             startActivity(viewIntent)
         }
     }
