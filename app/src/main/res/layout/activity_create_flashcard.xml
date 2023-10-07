@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/background_color"
     android:orientation="vertical"
     android:padding="16dp"
     tools:context=".MainActivity">
@@ -12,40 +12,40 @@
         android:id="@+id/nameFlashCard"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/text_color"
         android:hint="@string/flashcard_name_hint"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white" />
+        android:textColor="@color/text_color"
+        android:textColorHint="@color/text_color" />
 
     <EditText
         android:id="@+id/questionEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/text_color"
         android:hint="@string/question_hint"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white" />
+        android:textColor="@color/text_color"
+        android:textColorHint="@color/text_color" />
 
     <EditText
         android:id="@+id/answerEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/text_color"
         android:hint="@string/answer_hint"
-        android:textColor="@color/white"
-        android:textColorHint="@color/white" />
+        android:textColor="@color/text_color"
+        android:textColorHint="@color/text_color" />
 
     <Button
         android:id="@+id/addButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@color/dark"
+        android:background="@color/button_color"
         android:padding="10dp"
         android:text="@string/add"
-        android:textColor="@color/white" />
+        android:textColor="@color/text_color" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/flashcardsRecyclerView"
@@ -58,9 +58,9 @@
         android:id="@+id/savebutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/dark"
+        android:background="@color/button_color"
         android:padding="10dp"
         android:text="@string/save"
-        android:textColor="@color/white" />
+        android:textColor="@color/text_color" />
 
 </LinearLayout>

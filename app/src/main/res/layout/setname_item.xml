@@ -12,7 +12,7 @@
         android:id="@+id/setNameTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/dark"
+        android:background="@color/button_color"
         android:foreground="?android:attr/selectableItemBackground"
         android:padding="16dp"
         android:textColor="@android:color/white"
