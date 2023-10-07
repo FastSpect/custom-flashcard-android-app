@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginBottom="16dp"
-        android:background="#810C0C"
+        android:background="@color/delete_button_color"
         android:padding="10dp"
         android:text="@string/delete_flashcard"
         android:textColor="@color/text_color" />

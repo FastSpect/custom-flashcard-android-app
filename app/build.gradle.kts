@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace = "com.personal.customflashcards"
-    compileSdk = 31
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.personal.customflashcards"
-        minSdk = 31
-        targetSdk = 31
+        minSdk = 33
+        targetSdk = 33
         versionCode = 1
         versionName = "1.0"
 

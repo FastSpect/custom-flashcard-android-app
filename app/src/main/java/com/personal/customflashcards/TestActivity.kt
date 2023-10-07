@@ -1,6 +1,5 @@
 package com.personal.customflashcards
 
-import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 
 class TestActivity : AppCompatActivity() {
 
@@ -57,19 +57,35 @@ class TestActivity : AppCompatActivity() {
             // If you shuffle options in a real test, then you'd need a mechanism to track the correct answer's position
             isAnswerCorrect =
                 if (selectedOption.text == flashcards[questionIndices.first()].answer) {
-                    selectedOption.setBackgroundColor(Color.GREEN)  // Correct Answer
+                    selectedOption.setBackgroundColor(
+                        ContextCompat.getColor(
+                            this, R.color.muted_green
+                        )
+                    )  // Correct Answer
                     true
                 } else {
-                    selectedOption.setBackgroundColor(Color.RED)  // Wrong Answer
-                    correctOption.setBackgroundColor(Color.GREEN)  // Indicate the correct answer
+                    selectedOption.setBackgroundColor(
+                        ContextCompat.getColor(
+                            this, R.color.muted_red
+                        )
+                    )  // Wrong Answer
+                    correctOption.setBackgroundColor(
+                        ContextCompat.getColor(
+                            this, R.color.muted_green
+                        )
+                    )  // Indicate the correct answer
                     false
                 }
 
             // Delay for a brief moment to show the correct/wrong color feedback
             Handler(Looper.getMainLooper()).postDelayed({
                 optionsRadioGroup.clearCheck()
-                selectedOption.setBackgroundColor(Color.BLACK)
-                correctOption.setBackgroundColor(Color.BLACK)
+                selectedOption.setBackgroundColor(
+                    ContextCompat.getColor(
+                        this, R.color.button_color
+                    )
+                )
+                correctOption.setBackgroundColor(ContextCompat.getColor(this, R.color.button_color))
 
                 if (isAnswerCorrect) questionIndices.removeAt(0)
                 else questionIndices.add(questionIndices.removeAt(0))
