@@ -1,7 +1,6 @@
 package com.personal.customflashcards
 
-
-import android.content.res.Configuration
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.SeekBar
 import android.widget.TextView
@@ -12,6 +11,7 @@ class SettingsActivity : AppCompatActivity() {
 
     private lateinit var currentMode: TextView
     private lateinit var modeSeekBar: SeekBar
+    private lateinit var sharedPref: SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,21 +19,23 @@ class SettingsActivity : AppCompatActivity() {
 
         currentMode = findViewById(R.id.current_mode)
         modeSeekBar = findViewById(R.id.mode_seekbar)
+        sharedPref = getSharedPreferences("theme_prefs", MODE_PRIVATE)
 
-        when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
-            Configuration.UI_MODE_NIGHT_YES -> {
-                modeSeekBar.progress = 2
-                "Dark Mode".also { currentMode.text = it }
-            }
-
-            Configuration.UI_MODE_NIGHT_NO -> {
+        // Load saved preference and set SeekBar and text accordingly
+        when (sharedPref.getInt("theme_mode", 1)) { // Default is system default
+            0 -> {
                 modeSeekBar.progress = 0
                 "Light Mode".also { currentMode.text = it }
             }
 
-            else -> {
+            1 -> {
                 modeSeekBar.progress = 1
                 "System Default".also { currentMode.text = it }
+            }
+
+            2 -> {
+                modeSeekBar.progress = 2
+                "Dark Mode".also { currentMode.text = it }
             }
         }
 
@@ -55,6 +57,13 @@ class SettingsActivity : AppCompatActivity() {
                         "Dark Mode".also { currentMode.text = it }
                     }
                 }
+
+                // Save the selected theme mode in SharedPreferences
+                val editor = sharedPref.edit()
+                editor.putInt(
+                    "theme_mode", progress
+                ) // 0 for light, 1 for system default, 2 for dark
+                editor.apply()
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
