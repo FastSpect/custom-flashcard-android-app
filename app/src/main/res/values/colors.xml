@@ -5,6 +5,6 @@
     <color name="button_color">#9D9B9B</color>
     <color name="delete_button_color">#FF1111</color>
     <color name="set_color">#E6E6E6</color>
-    <color name="muted_red">#F2A8A8</color>
-    <color name="muted_green">#A8D5BA</color>
+    <color name="muted_red">#6D0000</color>
+    <color name="muted_green">#005321</color>
 </resources>

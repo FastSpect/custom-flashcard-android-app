@@ -27,7 +27,7 @@
             android:layout_height="match_parent"
             android:layout_margin="4dp"
             android:layout_weight="1"
-            android:background="@color/button_color"
+            android:background="@drawable/radio_button_selector"
             android:button="@android:color/transparent"
             android:buttonTint="@color/text_color"
             android:text="Option 1"
@@ -41,7 +41,7 @@
             android:layout_height="match_parent"
             android:layout_margin="4dp"
             android:layout_weight="1"
-            android:background="@color/button_color"
+            android:background="@drawable/radio_button_selector"
             android:button="@android:color/transparent"
             android:buttonTint="@color/text_color"
             android:text="Option 2"
@@ -55,7 +55,7 @@
             android:layout_height="match_parent"
             android:layout_margin="4dp"
             android:layout_weight="1"
-            android:background="@color/button_color"
+            android:background="@drawable/radio_button_selector"
             android:button="@android:color/transparent"
             android:buttonTint="@color/text_color"
             android:text="Option 3"
@@ -69,7 +69,7 @@
             android:layout_height="match_parent"
             android:layout_margin="4dp"
             android:layout_weight="1"
-            android:background="@color/button_color"
+            android:background="@drawable/radio_button_selector"
             android:button="@android:color/transparent"
             android:buttonTint="@color/text_color"
             android:text="Option 4"
@@ -86,7 +86,7 @@
         android:layout_marginTop="16dp"
         android:background="@color/button_color"
         android:padding="10dp"
-        android:textColor="@color/text_color"
-        android:text="Next" />
+        android:text="Next"
+        android:textColor="@color/text_color" />
 
 </LinearLayout>
