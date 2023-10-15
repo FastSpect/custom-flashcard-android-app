@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.documentfile.provider.DocumentFile
@@ -23,6 +24,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        applyThemeFromPreferences()
         setContentView(R.layout.activity_main)
 
         if (ContextCompat.checkSelfPermission(
@@ -36,6 +38,8 @@ class MainActivity : ComponentActivity() {
 
         val createFlashCardButton: Button = findViewById(R.id.createFlashcardButton)
         val viewFlashcardsButton: Button = findViewById(R.id.viewFlashcardsButton)
+        val settingsButton: Button = findViewById(R.id.settingsButton)
+
 
         createFlashCardButton.setOnClickListener {
             val createIntent = Intent(this, CreateFlashcardActivity::class.java)
@@ -44,6 +48,11 @@ class MainActivity : ComponentActivity() {
 
         viewFlashcardsButton.setOnClickListener {
             val viewIntent = Intent(this, ViewFlashcardsActivity::class.java)
+            startActivity(viewIntent)
+        }
+
+        settingsButton.setOnClickListener {
+            val viewIntent = Intent(this, SettingsActivity::class.java)
             startActivity(viewIntent)
         }
     }
@@ -79,6 +88,16 @@ class MainActivity : ComponentActivity() {
             }
             Toast.makeText(this, "$importedCount files imported successfully!", Toast.LENGTH_SHORT)
                 .show()
+        }
+    }
+
+    private fun applyThemeFromPreferences() {
+        val sharedPref = getSharedPreferences("theme_prefs", MODE_PRIVATE)
+
+        when (sharedPref.getInt("theme_mode", 1)) { // Default is system default
+            0 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+            1 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+            2 -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
     }
 

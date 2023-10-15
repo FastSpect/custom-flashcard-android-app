@@ -3,31 +3,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_color"
     android:gravity="center"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:padding="50dp"
     tools:context=".MainActivity">
 
     <Button
         android:id="@+id/createFlashcardButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="Create Flashcard" />
+        android:background="@color/button_color"
+        android:padding="10dp"
+        android:text="Create Flashcard"
+        android:textColor="@color/text_color" />
 
     <Button
         android:id="@+id/viewFlashcardsButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="View All Flashcards" />
+        android:background="@color/button_color"
+        android:padding="10dp"
+        android:text="View All Flashcards"
+        android:textColor="@color/text_color" />
 
     <Button
         android:id="@+id/importButton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/button_color"
         android:onClick="onImportClicked"
-        android:text="Import" />
+        android:layout_marginBottom="16dp"
+        android:padding="10dp"
+        android:text="Import"
+        android:textColor="@color/text_color" />
+
+    <Button
+        android:id="@+id/settingsButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/button_color"
+        android:padding="10dp"
+        android:text="Settings"
+        android:textColor="@color/text_color" />
 
 
 </LinearLayout>

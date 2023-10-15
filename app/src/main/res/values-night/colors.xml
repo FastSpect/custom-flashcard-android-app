@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="background_color">#000000</color>
+    <color name="text_color">#FFFFFFFF</color>
+    <color name="button_color">#202020</color>
+    <color name="delete_button_color">#810C0C</color>
+    <color name="set_color">#0E0E0E</color>
+    <color name="muted_red">#6D0000</color>
+    <color name="muted_green">#005321</color>
+</resources>

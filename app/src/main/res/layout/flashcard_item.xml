@@ -6,17 +6,17 @@
     android:layout_margin="4dp"
     android:background="@drawable/rounded_bg"
     android:elevation="4dp"
-    android:padding="16dp">
+    android:padding="20dp">
 
     <TextView
         android:id="@+id/questionText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:textColor="@android:color/black"
-        android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/answerText"
-        app:layout_constraintEnd_toStartOf="@+id/deleteImageView"
+        android:textColor="@color/text_color"
+        android:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/answerText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,19 +30,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@android:color/white" />
+        app:tint="@color/text_color" />
 
     <TextView
         android:id="@+id/answerText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:textColor="@android:color/black"
-        android:textSize="16sp"
+        android:textColor="@color/text_color"
+        android:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/deleteImageView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/questionText" />
+        app:layout_constraintStart_toEndOf="@+id/questionText"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

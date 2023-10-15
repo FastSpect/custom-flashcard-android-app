@@ -1,6 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background_color"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -11,44 +12,70 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
         android:text="Question here"
-        android:textSize="18sp" />
+        android:textColor="@color/text_color"
+        android:textSize="30sp" />
 
     <RadioGroup
         android:id="@+id/optionsRadioGroup"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <!-- ... other layout components ... -->
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
 
         <RadioButton
             android:id="@+id/option1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Option 1" />
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/radio_button_selector"
+            android:button="@android:color/transparent"
+            android:buttonTint="@color/text_color"
+            android:text="Option 1"
+            android:textAlignment="center"
+            android:textColor="@color/text_color"
+            android:textSize="24sp" />
 
         <RadioButton
             android:id="@+id/option2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Option 2" />
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/radio_button_selector"
+            android:button="@android:color/transparent"
+            android:buttonTint="@color/text_color"
+            android:text="Option 2"
+            android:textAlignment="center"
+            android:textColor="@color/text_color"
+            android:textSize="24sp" />
 
         <RadioButton
             android:id="@+id/option3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Option 3" />
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/radio_button_selector"
+            android:button="@android:color/transparent"
+            android:buttonTint="@color/text_color"
+            android:text="Option 3"
+            android:textAlignment="center"
+            android:textColor="@color/text_color"
+            android:textSize="24sp" />
 
         <RadioButton
             android:id="@+id/option4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Option 4" />
-
-        <!-- ... -->
-
-
-        <!-- Add more RadioButton views for other options... -->
-
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            android:background="@drawable/radio_button_selector"
+            android:button="@android:color/transparent"
+            android:buttonTint="@color/text_color"
+            android:text="Option 4"
+            android:textAlignment="center"
+            android:textColor="@color/text_color"
+            android:textSize="24sp" />
     </RadioGroup>
 
     <Button
@@ -57,6 +84,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:text="Next" />
+        android:background="@color/button_color"
+        android:padding="10dp"
+        android:text="Next"
+        android:textColor="@color/text_color" />
 
 </LinearLayout>
