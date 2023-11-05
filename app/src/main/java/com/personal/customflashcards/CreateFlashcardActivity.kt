@@ -1,6 +1,7 @@
 package com.personal.customflashcards
 
 import android.content.ContentValues
+import android.content.Context
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -126,8 +128,51 @@ class FlashcardAdapter(private val flashcards: MutableList<Flashcard>) :
                     notifyItemRemoved(position)
                 }
             }
+
+            itemView.setOnLongClickListener {
+                val position = absoluteAdapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    showEditDialog(position, itemView.context)
+                    notifyItemRemoved(position)
+                }
+                true
+            }
         }
     }
+
+    private fun showEditDialog(position: Int, context: Context) {
+        val flashcard = flashcards[position]
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        alertDialogBuilder.setTitle("Edit Flashcard")
+
+        val dialogView = LayoutInflater.from(context).inflate(R.layout.edit_flashcard_dialog, null)
+        val editQuestionEditText = dialogView.findViewById<EditText>(R.id.editQuestionEditText)
+        val editAnswerEditText = dialogView.findViewById<EditText>(R.id.editAnswerEditText)
+
+        editQuestionEditText.setText(flashcard.question)
+        editAnswerEditText.setText(flashcard.answer)
+
+        alertDialogBuilder.setView(dialogView)
+
+        alertDialogBuilder.setPositiveButton("Save") { _, _ ->
+            val newQuestion = editQuestionEditText.text.toString()
+            val newAnswer = editAnswerEditText.text.toString()
+
+            if (newQuestion.isEmpty() || newAnswer.isEmpty()) {
+                Toast.makeText(context, "Question or answer cannot be empty!", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                flashcards[position] = Flashcard(newQuestion, newAnswer)
+                notifyItemChanged(position)
+            }
+        }
+
+        alertDialogBuilder.setNegativeButton("Cancel") { _, _ ->
+        }
+
+        alertDialogBuilder.create().show()
+    }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FlashcardViewHolder {
         val view =
