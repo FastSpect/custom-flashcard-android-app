@@ -133,7 +133,7 @@ class FlashcardAdapter(private val flashcards: MutableList<Flashcard>) :
                 val position = absoluteAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
                     showEditDialog(position, itemView.context)
-                    notifyItemRemoved(position)
+                    notifyItemChanged(position)
                 }
                 true
             }
