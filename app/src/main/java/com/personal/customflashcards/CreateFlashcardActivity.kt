@@ -158,8 +158,13 @@ class FlashcardAdapter(private val flashcards: MutableList<Flashcard>) :
             val newQuestion = editQuestionEditText.text.toString()
             val newAnswer = editAnswerEditText.text.toString()
 
-            flashcards[position] = Flashcard(newQuestion, newAnswer)
-            notifyItemChanged(position)
+            if (newQuestion.isEmpty() || newAnswer.isEmpty()) {
+                Toast.makeText(context, "Question or answer cannot be empty!", Toast.LENGTH_SHORT)
+                    .show()
+            } else {
+                flashcards[position] = Flashcard(newQuestion, newAnswer)
+                notifyItemChanged(position)
+            }
         }
 
         alertDialogBuilder.setNegativeButton("Cancel") { _, _ ->
