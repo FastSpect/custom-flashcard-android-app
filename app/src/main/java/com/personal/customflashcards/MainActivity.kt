@@ -1,10 +1,12 @@
 package com.personal.customflashcards
 
+import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -25,15 +27,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         applyThemeFromPreferences()
         setContentView(R.layout.activity_main)
-
-        if (ContextCompat.checkSelfPermission(
-                this, android.Manifest.permission.READ_MEDIA_IMAGES
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this, arrayOf(android.Manifest.permission.READ_MEDIA_IMAGES), 1
-            )
-        }
 
         val createFlashCardButton: Button = findViewById(R.id.createFlashcardButton)
         val viewFlashcardsButton: Button = findViewById(R.id.viewFlashcardsButton)
@@ -75,7 +68,7 @@ class MainActivity : AppCompatActivity() {
 
             val documentFile = DocumentFile.fromTreeUri(this, uriTree)
             documentFile?.listFiles()?.forEach { file ->
-                if (file.isFile) {
+                if (file.isFile && file.name?.endsWith(".txt") == true) {
                     val content = contentResolver.openInputStream(file.uri)?.bufferedReader()
                         .use { it?.readText() }
                     if (saveToFlashcardsDirectory(
@@ -101,24 +94,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun saveToFlashcardsDirectory(content: String?, filename: String): Boolean {
-        if (content == null) return false
-
-        // Specify the directory and filename
-        val directory = File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
-            "Flashcards"
-        )
-        if (!directory.exists()) {
-            directory.mkdirs()
+        val values = ContentValues().apply {
+            put(MediaStore.Files.FileColumns.DISPLAY_NAME, filename)
+            put(MediaStore.Files.FileColumns.MIME_TYPE, "text/plain")
+            put(MediaStore.Files.FileColumns.RELATIVE_PATH, "Documents/Flashcards")
         }
 
-        val file = File(directory, filename)
-        if (file.exists()) {
-            // Possibly log or show a toast that the file already exists and will be skipped
-            Log.d(tag, "File $filename already exists, skipping.")
-            return false
+        val uri = contentResolver.insert(
+            MediaStore.Files.getContentUri("external"),
+            values
+        ) ?: return false
+
+        contentResolver.openOutputStream(uri)?.use {
+            it.write(content?.toByteArray())
         }
-        file.writeText(content)
+
         return true
     }
 }
