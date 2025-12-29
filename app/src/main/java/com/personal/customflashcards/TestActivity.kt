@@ -57,19 +57,19 @@ class TestActivity : AppCompatActivity() {
             // If you shuffle options in a real test, then you'd need a mechanism to track the correct answer's position
             isAnswerCorrect =
                 if (selectedOption.text == flashcards[questionIndices.first()].answer) {
-                    selectedOption.setTextColor(
+                    selectedOption.setBackgroundColor(
                         ContextCompat.getColor(
                             this, R.color.muted_green
                         )
                     )  // Correct Answer
                     true
                 } else {
-                    selectedOption.setTextColor(
+                    selectedOption.setBackgroundColor(
                         ContextCompat.getColor(
                             this, R.color.muted_red
                         )
                     )  // Wrong Answer
-                    correctOption.setTextColor(
+                    correctOption.setBackgroundColor(
                         ContextCompat.getColor(
                             this, R.color.muted_green
                         )
@@ -80,12 +80,8 @@ class TestActivity : AppCompatActivity() {
             // Delay for a brief moment to show the correct/wrong color feedback
             Handler(Looper.getMainLooper()).postDelayed({
                 optionsRadioGroup.clearCheck()
-                selectedOption.setTextColor(
-                    ContextCompat.getColor(
-                        this, R.color.text_color
-                    )
-                )
-                correctOption.setTextColor(ContextCompat.getColor(this, R.color.text_color))
+                selectedOption.setBackgroundResource(R.drawable.radio_button_selector)
+                correctOption.setBackgroundResource(R.drawable.radio_button_selector)
 
                 if (isAnswerCorrect) questionIndices.removeAt(0)
                 else questionIndices.add(questionIndices.removeAt(0))

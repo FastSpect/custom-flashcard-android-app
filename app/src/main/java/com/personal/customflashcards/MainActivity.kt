@@ -1,40 +1,26 @@
 package com.personal.customflashcards
 
-import android.app.Activity
+import android.content.ContentValues
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
-import android.util.Log
+import android.provider.MediaStore
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.documentfile.provider.DocumentFile
-import java.io.File
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
     private val tag = "MainActivity"
-    private val REQUEST_CODE = 1234
+    private val defaultRequestCode = 1234
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         applyThemeFromPreferences()
         setContentView(R.layout.activity_main)
-
-        if (ContextCompat.checkSelfPermission(
-                this, android.Manifest.permission.READ_MEDIA_IMAGES
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this, arrayOf(android.Manifest.permission.READ_MEDIA_IMAGES), 1
-            )
-        }
 
         val createFlashCardButton: Button = findViewById(R.id.createFlashcardButton)
         val viewFlashcardsButton: Button = findViewById(R.id.viewFlashcardsButton)
@@ -59,13 +45,13 @@ class MainActivity : ComponentActivity() {
 
     fun onImportClicked(view: View) {
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-        startActivityForResult(intent, REQUEST_CODE)
+        startActivityForResult(intent, defaultRequestCode)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
+        if (requestCode == defaultRequestCode && resultCode == RESULT_OK) {
             val uriTree: Uri? = data?.data
             var importedCount = 0
 
@@ -76,7 +62,7 @@ class MainActivity : ComponentActivity() {
 
             val documentFile = DocumentFile.fromTreeUri(this, uriTree)
             documentFile?.listFiles()?.forEach { file ->
-                if (file.isFile) {
+                if (file.isFile && (file.name?.endsWith(".txt") == true || file.name?.endsWith(".json") == true)) {
                     val content = contentResolver.openInputStream(file.uri)?.bufferedReader()
                         .use { it?.readText() }
                     if (saveToFlashcardsDirectory(
@@ -102,26 +88,21 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun saveToFlashcardsDirectory(content: String?, filename: String): Boolean {
-        if (content == null) return false
-
-        // Specify the directory and filename
-        val directory = File(
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS),
-            "Flashcards"
-        )
-        if (!directory.exists()) {
-            directory.mkdirs()
+        val mimeType = if (filename.endsWith(".json")) "application/json" else "text/plain"
+        val values = ContentValues().apply {
+            put(MediaStore.Files.FileColumns.DISPLAY_NAME, filename)
+            put(MediaStore.Files.FileColumns.MIME_TYPE, mimeType)
+            put(MediaStore.Files.FileColumns.RELATIVE_PATH, "Documents/Flashcards")
         }
 
-        val file = File(directory, filename)
-        if (file.exists()) {
-            // Possibly log or show a toast that the file already exists and will be skipped
-            Log.d(tag, "File $filename already exists, skipping.")
-            return false
+        val uri = contentResolver.insert(
+            MediaStore.Files.getContentUri("external"), values
+        ) ?: return false
+
+        contentResolver.openOutputStream(uri)?.use {
+            it.write(content?.toByteArray())
         }
-        file.writeText(content)
+
         return true
     }
 }
-
-

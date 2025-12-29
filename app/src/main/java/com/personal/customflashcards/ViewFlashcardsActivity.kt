@@ -19,7 +19,7 @@ class ViewFlashcardsActivity : AppCompatActivity() {
     private val tag = "ViewFlashcardsActivity"
 
     private lateinit var setsRecyclerView: RecyclerView
-    private val setNames = mutableListOf<String>()
+    private val setFiles = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,11 +27,13 @@ class ViewFlashcardsActivity : AppCompatActivity() {
 
         setsRecyclerView = findViewById(R.id.setsRecyclerView)
 
-        setNames.addAll(loadFlashcards())
+        setFiles.addAll(loadFlashcards())
 
-        val setNameAdapter = SetNameAdapter(setNames) { setName ->
+        val setNameAdapter = SetNameAdapter(setFiles) { fileName ->
             val intent = Intent(this@ViewFlashcardsActivity, FlashcardDetailActivity::class.java)
-            intent.putExtra("setName", setName)
+            intent.putExtra("fileName", fileName)
+            // For backward compatibility if needed, or just use fileName
+            intent.putExtra("setName", fileName.substringBeforeLast('.'))
             startActivity(intent)
         }
 
@@ -41,25 +43,27 @@ class ViewFlashcardsActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        setNames.clear()  // Clear the previous list
-        setNames.addAll(loadFlashcards())  // Reload the list from SharedPreferences
-        setsRecyclerView.adapter?.notifyDataSetChanged()  // Notify the adapter to refresh the list
+        setFiles.clear()
+        setFiles.addAll(loadFlashcards())
+        setsRecyclerView.adapter?.notifyDataSetChanged()
     }
 
     private fun loadFlashcards(): List<String> {
         val filenames = mutableListOf<String>()
-        val file = File(Environment.getExternalStorageDirectory(), "Documents/Flashcards")
-        file.listFiles()?.forEach { f ->
-            filenames.add(f.name.substringBefore('.'))
+        val directory = File(Environment.getExternalStorageDirectory(), "Documents/Flashcards")
+        directory.listFiles()?.forEach { f ->
+            if (f.isFile && (f.name.endsWith(".txt") || f.name.endsWith(".json"))) {
+                filenames.add(f.name)
+            }
         }
-        Log.d(tag, "${filenames.size} Flashcards found: $filenames")
+        Log.d(tag, "${filenames.size} Flashcard files found: $filenames")
         return filenames
     }
 
 }
 
 class SetNameAdapter(
-    private val setNames: List<String>, private val onClick: (String) -> Unit
+    private val setFiles: List<String>, private val onClick: (String) -> Unit
 ) : RecyclerView.Adapter<SetNameAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -69,8 +73,8 @@ class SetNameAdapter(
             itemView.setOnClickListener {
                 val position = bindingAdapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val setName = setNames[position]
-                    onClick(setName)
+                    val fileName = setFiles[position]
+                    onClick(fileName)
                 }
             }
         }
@@ -83,11 +87,9 @@ class SetNameAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val currentSetName = setNames[position]
-        holder.setNameTextView.text = currentSetName
+        val fileName = setFiles[position]
+        holder.setNameTextView.text = fileName.substringBeforeLast('.')
     }
 
-    override fun getItemCount() = setNames.size
+    override fun getItemCount() = setFiles.size
 }
-
-
