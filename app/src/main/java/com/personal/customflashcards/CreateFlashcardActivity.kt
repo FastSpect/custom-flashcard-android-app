@@ -85,8 +85,8 @@ class CreateFlashcardActivity : AppCompatActivity() {
         val flashcardsJson = gson.toJson(temporaryFlashcards)
 
         val contentValues = ContentValues().apply {
-            put(MediaStore.Files.FileColumns.DISPLAY_NAME, "$setName.txt")
-            put(MediaStore.Files.FileColumns.MIME_TYPE, "text/plain")
+            put(MediaStore.Files.FileColumns.DISPLAY_NAME, "$setName.json")
+            put(MediaStore.Files.FileColumns.MIME_TYPE, "application/json")
             put(MediaStore.Files.FileColumns.RELATIVE_PATH, "Documents/Flashcards")
         }
 

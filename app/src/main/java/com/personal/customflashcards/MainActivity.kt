@@ -2,21 +2,15 @@ package com.personal.customflashcards
 
 import android.content.ContentValues
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.documentfile.provider.DocumentFile
-import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -68,7 +62,7 @@ class MainActivity : AppCompatActivity() {
 
             val documentFile = DocumentFile.fromTreeUri(this, uriTree)
             documentFile?.listFiles()?.forEach { file ->
-                if (file.isFile && file.name?.endsWith(".txt") == true) {
+                if (file.isFile && (file.name?.endsWith(".txt") == true || file.name?.endsWith(".json") == true)) {
                     val content = contentResolver.openInputStream(file.uri)?.bufferedReader()
                         .use { it?.readText() }
                     if (saveToFlashcardsDirectory(
@@ -94,15 +88,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun saveToFlashcardsDirectory(content: String?, filename: String): Boolean {
+        val mimeType = if (filename.endsWith(".json")) "application/json" else "text/plain"
         val values = ContentValues().apply {
             put(MediaStore.Files.FileColumns.DISPLAY_NAME, filename)
-            put(MediaStore.Files.FileColumns.MIME_TYPE, "text/plain")
+            put(MediaStore.Files.FileColumns.MIME_TYPE, mimeType)
             put(MediaStore.Files.FileColumns.RELATIVE_PATH, "Documents/Flashcards")
         }
 
         val uri = contentResolver.insert(
-            MediaStore.Files.getContentUri("external"),
-            values
+            MediaStore.Files.getContentUri("external"), values
         ) ?: return false
 
         contentResolver.openOutputStream(uri)?.use {
@@ -112,5 +106,3 @@ class MainActivity : AppCompatActivity() {
         return true
     }
 }
-
-
